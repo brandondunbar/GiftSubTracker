@@ -1,0 +1,21 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+#banner {
+    background-color: #6441a5;
+    color: white;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+table {
+    margin: 0 auto;
+    width: 80%;
+}
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+table th, table td {
+    padding: 10px;
+    text-align: left;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gift Sub Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <div id="banner">
+        <h1>Gift Sub Tracker</h1>
+    </div>
+    {% if authorized %}
+        <table id="gifters-table-body">
+            <tr>
+                <th>User Name</th>
+                <th>Gifted Subs</th>
+                <th>Rewards Given</th>
+                <th></th>
+            </tr>
+            {% for gifter in gifters %}
+                <tr id="{{ gifter['user_id'] }}">
+                    <td>{{ gifter['user_name'] }}</td>
+                    <td>{{ gifter['gifted_subs'] }}</td>
+                    <td class="rewards-given">{{ gifter['rewards_given'] }}</td>
+                    <td>
+                        <form action="/reward" method="post">
+                            <input type="hidden" name="user_id" value="{{ gifter['user_id'] }}">
+                            <input type="submit" value="Reward" class="reward-button" data-userid="{{ gifter['user_id'] }}">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Please authorize the application to track gifted subs.</p>
+        <a href="/authorize">Authorize</a>
+    {% endif %}
+</body>
+</html>
