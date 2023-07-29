@@ -23,7 +23,7 @@
     <a href="https://github.com/brandondunbar/GiftSubTracker"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/brandondunbar/GiftSubTracker">View Demo</a>
+    <a href="https://www.GiftSubTracker.com/">View Site</a>
     ·
     <a href="https://github.com/brandondunbar/GiftSubTracker/issues">Report Bug</a>
     ·
@@ -60,7 +60,7 @@
 
 [![Gift Sub Tracker Screen Shot][product-screenshot]](https://www.giftsubtracker.com)
 
-This website provides a table showing viewers who have gifted subs, the number of subs they've gifted, the number of rewards they've been awarded, and a button to track when rewards are awarded.
+This website provides a table showing viewers who have gifted subs, the number of subs they've gifted, the number of rewards they've been awarded, and a button to allow streamers to track when a reward has been given.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -68,9 +68,8 @@ This website provides a table showing viewers who have gifted subs, the number o
 
 ### Built With
 
-* [Python 3](https://nextjs.org/)
-* [Flask](https://reactjs.org/)
-* [Ajax](https://vuejs.org/)
+* [Python 3](https://python.org/)
+* [Flask](https://flask.palletsprojects.com/en/2.3.x/)
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
 
