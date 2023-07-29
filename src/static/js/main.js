@@ -25,7 +25,7 @@ $(document).ready(function(){
     });
 });
 
-var socket = io.connect('https://brandondunbar.pythonanywhere.com:' + location.port);
+var socket = io.connect('https://www.giftsubtracker.com:' + location.port);
 socket.on('update_gifters', function(data) {
     // Get the table body
     var tableBody = document.getElementById('gifters-table-body');
