@@ -31,6 +31,7 @@ port.
 from flask import Flask, request, render_template, Response, redirect, url_for, session, jsonify
 from flask_socketio import SocketIO
 import constants
+import logging
 from services import configure_services
 from webhook_handler import WebhookHandler
 
@@ -40,6 +41,7 @@ app.secret_key = constants.FLASK_SECRET
 socketio = SocketIO(app)
 
 sheet, twitch, twitch_handler = configure_services()
+logger = logging.getLogger(__name__)
 
 
 @app.route('/')
@@ -216,4 +218,6 @@ def increment_rewards():
 
 # Run the Flask app with SocketIO on the specified port
 if __name__ == '__main__':
+    server_start_msg = f"Starting server on port {constants.PORT}."
+    logger.info(server_start_msg)
     socketio.run(app, port=constants.PORT)
