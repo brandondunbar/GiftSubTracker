@@ -24,9 +24,8 @@ def load_environment_variables():
 
     # Define required environment variable names
     required_vars = [
-        'GCP_PROJECT_ID', 'GCP_DATASET_ID', 'GCP_TABLE_ID', 'GCP_KEY_PATH',
-        'TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'TWITCH_HUB_SECRET',
-        'FLASK_SIGNING_SECRET'
+        'GCP_PROJECT_ID', 'GCP_KEY_PATH', 'TWITCH_CLIENT_ID',
+        'TWITCH_CLIENT_SECRET', 'TWITCH_HUB_SECRET', 'FLASK_SIGNING_SECRET'
     ]
 
     # Load and validate required environment variables
