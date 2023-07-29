@@ -25,7 +25,7 @@ $(document).ready(function(){
     });
 });
 
-var socket = io.connect('https://98d8-50-26-241-207.ngrok-free.app:' + location.port);
+var socket = io.connect('https://brandondunbar.pythonanywhere.com:' + location.port);
 socket.on('update_gifters', function(data) {
     // Get the table body
     var tableBody = document.getElementById('gifters-table-body');
