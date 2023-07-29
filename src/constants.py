@@ -25,6 +25,6 @@ TWITCH_HUB_SECRET = env_vars['TWITCH_HUB_SECRET']
 FLASK_SECRET = env_vars['FLASK_SIGNING_SECRET']
 
 # Define other constants
-DOMAIN_NAME = "https://98d8-50-26-241-207.ngrok-free.app"
+DOMAIN_NAME = "https://www.giftsubtracker.com"
 PORT = 8080
 SPREADSHEET_ID = "1ZBmkZYMFVrl1jURy5Sk-uf4-018P2RvQ9NIhxWJH9lU"
