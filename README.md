@@ -20,7 +20,7 @@
   <p align="center">
     A website that enables Twitch streamers to track gifted subs and reward viewers accordingly.
     <br />
-    <a href="https://github.com/brandondunbar/GiftSubTracker"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/brandondunbar/GiftSubTracker/Wiki"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://www.GiftSubTracker.com/">View Site</a>

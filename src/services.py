@@ -21,7 +21,7 @@ clutter in the global namespace and making it easier to manage these shared reso
 
 
 import logging
-from gsheets import GoogleSheets
+from googlesheets import SheetManager
 from twitch import Twitch, TwitchHandler
 import constants
 
@@ -45,14 +45,14 @@ def configure_services():
                will be None.
     """
 
-    sheet = None
+    sheet_mgr = None
     twitch = None
     twitch_handler = None
 
     try:
-        sheet = GoogleSheets(
+        sheet_mgr = SheetManager(
             constants.GOOGLE_APPLICATION_CREDENTIALS,
-            constants.SPREADSHEET_ID)
+            constants.REF_SPREADSHEET_ID)
     except FileNotFoundError as file_error:
         print(f"Failed to initialize GoogleSheets: {file_error}")
 
@@ -66,4 +66,4 @@ def configure_services():
     except ValueError as value_error:
         print(f"Failed to initialize TwitchHandler: {value_error}")
 
-    return sheet, twitch, twitch_handler
+    return sheet_mgr, twitch, twitch_handler

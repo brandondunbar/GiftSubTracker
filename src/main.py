@@ -28,10 +28,10 @@ port.
 """
 
 # Import required modules
+import logging
 from flask import Flask, request, render_template, Response, redirect, url_for, session, jsonify
 from flask_socketio import SocketIO
 import constants
-import logging
 from services import configure_services
 from webhook_handler import WebhookHandler
 
@@ -40,7 +40,7 @@ app = Flask(__name__)
 app.secret_key = constants.FLASK_SECRET
 socketio = SocketIO(app)
 
-sheet, twitch, twitch_handler = configure_services()
+sheet_mgr, twitch, twitch_handler = configure_services()
 logger = logging.getLogger(__name__)
 
 
@@ -60,7 +60,9 @@ def home():
         twitch.set_user_access_token_if_valid(session['access_token'])
 
     # Retrieve all rows from the Google sheet
-    gifters = sheet.get_all_rows()
+    gifters = None
+    if authorized:
+        gifters = sheet_mgr.get_streamer_rows(session.get('broadcaster_id'))
 
     # Render and return the home page template
     return render_template("index.html", authorized=authorized, gifters=gifters)
@@ -79,6 +81,7 @@ def handle_verification():
         A Response object with a redirect to the home page.
     """
 
+    print('/webhook get called')
     # Extract the authorization code from the request arguments
     auth_code = request.args.get('code')
 
@@ -96,6 +99,7 @@ def handle_verification():
     # Request the user access token, retrieve the broadcaster ID, and subscribe
     # to EventSub
     session['access_token'] = twitch_handler.handle_verification(auth_code)
+    session['broadcaster_id'] = twitch.get_broadcaster_id()
 
     # Make the session persistent and store the access token in the session
     session.permanent = True
@@ -116,12 +120,14 @@ def handle_webhook():
         A Response object with 'OK' if the request is handled successfully, or
         the challenge string if the request is a subscription verification.
     """
-
+    print('/webhook post called')
     # Extract the request data
     data = request.json
 
     # Create a WebhookHandler and handle the webhook
-    handler = WebhookHandler(sheet, socketio)
+    streamer_sheet = sheet_mgr.get_streamer_sheet(
+        session.get('broadcaster_id'))
+    handler = WebhookHandler(streamer_sheet, socketio)
     response = handler.handle_webhook(data)
 
     # If the response is 'OK', return a response with 'OK'
@@ -160,12 +166,16 @@ def respond():
 
     # Extract the request data
     data = request.get_json()
-    user_id = data['data']['user_id']
-    user_name = data['data']['user_name']
-    gifted_subs = data['data']['gifted_subs']
+    values_dict = {
+        'user_id': data['data']['user_id'],
+        'user_name': data['data']['user_name'],
+        'gifted_subs': data['data']['gifted_subs'],
+        'rewards_given': 0
+    }
 
     # Update the Google sheet with the gifted subs information
-    sheet.append_or_update_row(user_id, user_name, gifted_subs, 0)
+    user_sheet = sheet_mgr.get_streamer_sheet(session.get('broadcaster_id'))
+    user_sheet.append_or_update_row(values_dict)
 
     # Return a response with the status of the operation
     return jsonify({'success': True})
@@ -181,33 +191,11 @@ def increment_rewards():
         data.
     """
 
-    # Extract the user ID from the request form data
-    user_id = request.form.get('user_id')
-
     # Attempt to get the user row from the Google sheet
-    row = sheet.get_user_row(user_id)
-
-    # If the user row is found, increment the rewards
-    if row is not None:
-        result = sheet.sheet.values().get(
-            spreadsheetId=sheet.spreadsheet_id,
-            range=f'Sheet1!A{row}:D{row}').execute()
-        values = result.get('values', [])
-        if values:
-            # Increment the rewards_given by 1
-            rewards_given = int(values[0][3]) + 1
-            values = [
-                [values[0][0],
-                 values[0][1],
-                 int(values[0][2]),
-                 rewards_given]]
-            body = {'values': values}
-            result = sheet.sheet.values().update(
-                spreadsheetId=sheet.spreadsheet_id,
-                range=f'Sheet1!A{row}:D{row}',
-                valueInputOption='USER_ENTERED',
-                body=body).execute()
-            print(f"Updated {result.get('updatedCells')} cells.")
+    streamer_sheet = sheet_mgr.get_streamer_sheet(
+        session.get('broadcaster_id'))
+    rewards_given = streamer_sheet.increment_rewards_given(
+        session.get('broadcaster_id'))
 
     # Return a response with the status of the operation and the new rewards
     # data

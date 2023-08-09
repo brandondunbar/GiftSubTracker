@@ -26,10 +26,10 @@ import logging
 import json
 from urllib.parse import urlencode
 from enum import Enum
-import requests
-import constants
 import hashlib
 import hmac
+import requests
+import constants
 
 
 class URLs(Enum):
@@ -204,7 +204,7 @@ class Twitch:
 
         if data['data']:
             return data['data'][0]['login']
-        
+
         raise RuntimeError(f'Failed to get Twitch username: {response.text}')
 
     def get_broadcaster_id(self):
@@ -315,7 +315,7 @@ class TwitchHandler:
         """
         self.twitch = Twitch(http_service)
 
-    def handle_verification(self, auth_code):
+    def handle_verification(self, auth_code: str):
         """
         Handles the verification process for a Twitch webhook.
 

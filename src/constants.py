@@ -16,8 +16,6 @@ env_vars = load_environment_variables()
 
 # Assign environment variables to constants
 GCP_PROJECT_ID = env_vars['GCP_PROJECT_ID']
-GCP_DATASET_ID = env_vars['GCP_DATASET_ID']
-GCP_TABLE_ID = env_vars['GCP_TABLE_ID']
 GOOGLE_APPLICATION_CREDENTIALS = env_vars['GCP_KEY_PATH']
 TWITCH_CLIENT_ID = env_vars['TWITCH_CLIENT_ID']
 TWITCH_CLIENT_SECRET = env_vars['TWITCH_CLIENT_SECRET']
@@ -25,6 +23,9 @@ TWITCH_HUB_SECRET = env_vars['TWITCH_HUB_SECRET']
 FLASK_SECRET = env_vars['FLASK_SIGNING_SECRET']
 
 # Define other constants
-DOMAIN_NAME = "https://www.giftsubtracker.com"
+DOMAIN_NAME = "https://9269-50-26-233-27.ngrok-free.app"
 PORT = 8080
-SPREADSHEET_ID = "1ZBmkZYMFVrl1jURy5Sk-uf4-018P2RvQ9NIhxWJH9lU"
+REF_SPREADSHEET_ID = "17v8nY-CNssb6VRA2WQhDT6mmfhB4cWqCBZuZj1KDjuI"
+
+# General constants
+UNICODE_A_VALUE = 65

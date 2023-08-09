@@ -12,7 +12,7 @@ server for real-time updates.
 
 from typing import Dict, Union
 from flask_socketio import SocketIO
-from gsheets import GoogleSheets
+from googlesheets import StreamerSheet
 
 
 class WebhookHandler:
@@ -25,7 +25,7 @@ class WebhookHandler:
         socketio (SocketIO): The SocketIO server for real-time updates.
     """
 
-    def __init__(self, sheet: GoogleSheets, socketio: SocketIO) -> None:
+    def __init__(self, sheet: StreamerSheet, socketio: SocketIO) -> None:
         """
         Constructs the necessary attributes for the WebhookHandler object.
 
@@ -55,16 +55,14 @@ class WebhookHandler:
         if 'challenge' in data:
             return data['challenge']
 
-        user_id = data['event']['user_id']
-        user_name = data['event']['user_name']
-        gifted_subs = data['event']['total']
+        updates = {
+            'user_id': data['event']['user_id'],
+            'user_name': data['event']['user_name'],
+            'gifted_subs': data['event']['total'],
+            'rewards_given': 0
+        }
 
-        self.socketio.emit('update_gifters', {
-            'user_id': user_id,
-            'user_name': user_name,
-            'gifted_subs': gifted_subs,
-            'rewards_given': 0})
-
-        self.sheet.append_or_update_row(user_id, user_name, gifted_subs, 0)
+        self.socketio.emit('update_gifters', updates)
+        self.sheet.append_or_update_row(updates)
 
         return 'OK'
